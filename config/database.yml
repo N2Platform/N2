@@ -5,13 +5,13 @@ default: &default
 
 development:
   <<: *default
-  databse: N2
+  database: n2
 
 production:
   <<: *default
-  database: N2
+  database: n2
 
 test:
    <<: *default
-   database: N2_test
+   database: n2_test
 
