@@ -3,4 +3,4 @@ test:
   encoding: unicode
   pool: 5
   host: localhost
-
+  database: n2_test
