@@ -70,6 +70,7 @@ class SuppliersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def supplier_params
-      params.require(:supplier).permit(:name, :hatpull_index)
+      params.require(:supplier).permit(:name, :ghg_and_pollution, :sustainability_commitment,
+                                       :social_performance, :hcv_protection, :traceability_and_diversity)
     end
 end

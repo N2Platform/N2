@@ -15,9 +15,25 @@
     <%= f.label :name %><br>
     <%= f.text_field :name %>
   </div>
+<div class="field">
+  <%= f.label :ghg_and_pollution %><br>
+  <%= f.number_field :ghg_and_pollution %>
+</div>
   <div class="field">
-    <%= f.label :hatpull_index %><br>
-    <%= f.number_field :hatpull_index %>
+    <%= f.label :sustainability_commitment %><br>
+    <%= f.number_field :sustainability_commitment %>
+  </div>
+  <div class="field">
+    <%= f.label :social_performance %><br>
+    <%= f.number_field :social_performance %>
+  </div>
+  <div class="field">
+    <%= f.label :hcv_protection %><br>
+    <%= f.number_field :hcv_protection %>
+  </div>
+  <div class="field">
+    <%= f.label :traceability_and_diversity %><br>
+    <%= f.number_field :traceability_and_diversity %>
   </div>
   <div class="actions">
     <%= f.submit %>

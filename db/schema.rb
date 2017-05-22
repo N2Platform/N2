@@ -11,16 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170518162254) do
+ActiveRecord::Schema.define(version: 20170522101843) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "suppliers", force: :cascade do |t|
     t.string   "name"
-    t.integer  "hatpull_index"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.integer  "ghg_and_pollution"
+    t.integer  "sustainability_commitment"
+    t.integer  "social_performance"
+    t.integer  "hcv_protection"
+    t.integer  "traceability_and_diversity"
   end
 
   create_table "users", force: :cascade do |t|
