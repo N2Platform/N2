@@ -1,5 +1,5 @@
 class SuppliersController < ApplicationController
-  before_action :set_supplier, only: [:show, :edit, :update, :destroy]
+  before_action :set_supplier, only: [:show, :edit, :update, :destroy, :flower]
   before_action :authenticate_user!
 
   # GET /suppliers
@@ -11,6 +11,10 @@ class SuppliersController < ApplicationController
   # GET /suppliers/1
   # GET /suppliers/1.json
   def show
+  end
+
+  # GET /suppliers/1/flower
+  def flower
   end
 
   # GET /suppliers/new
