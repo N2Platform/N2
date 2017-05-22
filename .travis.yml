@@ -1,0 +1,16 @@
+language: ruby
+services:
+  - postgresql
+before_script:
+  - cp config/database.yml.travis config/database.yml
+  - psql -c "create user n2_user with password 'n2_password';" -U postgres
+  - psql -c 'create database n2_test with owner n2_owner;' -U postgres
+script:
+  - bundle exec rake db:migrate --trace
+  - RAILS_ENV=test bundle exec rake db:migrate --trace
+  - bundle exec rake db:test:prepare
+  - xvfb-run bundle exec rspec -fd spec/
+rvm:
+  - 2.2.0
+cache: bundler
+
