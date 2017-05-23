@@ -63,7 +63,6 @@ function page_loaded() {
 function scalable_draw(image, x, y, width, height) {
     var ctx = canvas.getContext('2d');
     // Convert percentages to pixels
-    console.log("Before: x: " + x + ", y: " + y, ", width: " + width + ", height: " + height);
     x = x*canvas.width/100;
     y = y*canvas.height/100;
     width = width*canvas.width/100;
