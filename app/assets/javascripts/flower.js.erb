@@ -1,25 +1,75 @@
 var petals = new Image();
 petals.src = "<%= asset_path('flower1-02.png') %>";
+var px=16.19, py=7.76, pw=29.76, ph=35.04;
 
 var core = new Image();
 core.src = "<%= asset_path('flower1-03.png') %>";
+var cx=33.10, cy=19.11, cw=25.00, ch=14.13;
 
-images = [loadImage(petals), loadImage(core)];
+var trunk = new Image();
+trunk.src = "<%= asset_path('flower1-04.png') %>";
+var tx=40.24, ty=34.62, tw=7.86, th=39.9;
 
-window.onload = function() {
-    var canvas = document.getElementById('flower');
-    var ctx = canvas.getContext('2d');
-    Promise.all(images).then(function() {
-        ctx.drawImage(core, 48,43,156,158);
-        core.style.display = 'none';
-        ctx.drawImage(petals, 0, 0, 250, 250);
-        petals.style.display = 'none';
-    });
-};
+var soil = new Image();
+soil.src = "<%= asset_path('flower1-05.png') %>";
+var sx=0, sy=74.52, sw=100, sh=25.48;
 
+var left_leaf = new Image();
+left_leaf.src = "<%= asset_path('flower1-06.png') %>";
+var lx=19.52, ly=38.23, lw=23.81, lh=12.46;
+
+
+var right_leaf = new Image();
+right_leaf.src = "<%= asset_path('flower1-08.png') %>";
+var rx=45.95, ry=36.98, rw=24.05, rh=15.93;
+
+
+
+images = [loadImage(petals), loadImage(core), loadImage(trunk),
+    loadImage(soil), loadImage(left_leaf), loadImage(right_leaf)];
+
+var canvas;
+
+// Because of rails magic, window.onload doesn't trigger when clicking links.
+$(document).on('turbolinks:load', page_loaded);
+
+// Returns a promise that resolves into the requested image.
 function loadImage(img) {
     return new Promise(function(resolve, reject) {
         img.onload = resolve(img);
     });
 
+}
+
+function draw_flower() {
+    //Once all the images have been loaded
+    Promise.all(images).then(function() {
+        scalable_draw(petals, px, py, pw, ph);
+        scalable_draw(core, cx, cy, cw, ch);
+        scalable_draw(left_leaf, lx, ly, lw, lh);
+        scalable_draw(right_leaf, rx, ry, rw, rh);
+        scalable_draw(trunk, tx, ty, tw, th);
+        scalable_draw(soil, sx, sy, sw, sh);
+    });
+}
+
+// Draw the flower if the page has a canvas for it.
+function page_loaded() {
+    canvas = document.getElementById('flower');
+    if (canvas) draw_flower();
+}
+
+// Parameters in percentages to support scaling of the image.
+function scalable_draw(image, x, y, width, height) {
+    var ctx = canvas.getContext('2d');
+    // Convert percentages to pixels
+    console.log("Before: x: " + x + ", y: " + y, ", width: " + width + ", height: " + height);
+    x = x*canvas.width/100;
+    y = y*canvas.height/100;
+    width = width*canvas.width/100;
+    height = height*canvas.height/100;
+
+    //Draw the image
+    ctx.drawImage(image, x, y, width, height);
+    image.style.display = 'none';
 }
