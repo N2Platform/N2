@@ -1,0 +1,25 @@
+var petals = new Image();
+petals.src = "<%= asset_path('flower1-02.png') %>";
+
+var core = new Image();
+core.src = "<%= asset_path('flower1-03.png') %>";
+
+images = [loadImage(petals), loadImage(core)];
+
+window.onload = function() {
+    var canvas = document.getElementById('flower');
+    var ctx = canvas.getContext('2d');
+    Promise.all(images).then(function() {
+        ctx.drawImage(core, 48,43,156,158);
+        core.style.display = 'none';
+        ctx.drawImage(petals, 0, 0, 250, 250);
+        petals.style.display = 'none';
+    });
+};
+
+function loadImage(img) {
+    return new Promise(function(resolve, reject) {
+        img.onload = resolve(img);
+    });
+
+}
