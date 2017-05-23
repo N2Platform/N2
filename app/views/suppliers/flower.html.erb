@@ -6,3 +6,11 @@
 
 <%= link_to 'Edit', edit_supplier_path(@supplier) %> |
 <%= link_to 'Back', suppliers_path %>
+
+<div style="display: none;">
+  <p id="ghg"><%= @supplier.ghg_and_pollution %></p>
+  <p id="sustainability"><%= @supplier.sustainability_commitment %></p>
+  <p id="social"><%= @supplier.social_performance %></p>
+  <p id="hcv"><%= @supplier.hcv_protection %></p>
+  <p id="traceability"><%= @supplier.traceability_and_diversity %></p>
+</div>

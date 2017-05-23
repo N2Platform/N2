@@ -23,7 +23,8 @@ var right_leaf = new Image();
 right_leaf.src = "<%= asset_path('flower1-08.png') %>";
 var rx=51, ry=42, rw=24.0476190476, rh=16.6666666667;
 
-
+// Sustainer variables. Use these when deciding how to draw the flower!
+var ghg, sustainability, social, hcv, traceability;
 
 images = [loadImage(petals), loadImage(core), loadImage(trunk),
     loadImage(soil), loadImage(left_leaf), loadImage(right_leaf)];
@@ -56,7 +57,15 @@ function draw_flower() {
 // Draw the flower if the page has a canvas for it.
 function page_loaded() {
     canvas = document.getElementById('flower');
-    if (canvas) draw_flower();
+    if (canvas) {
+        ghg = parseInt(document.getElementById('ghg').innerHTML);
+        sustainability = parseInt(document.getElementById('sustainability').innerHTML);
+        social = parseInt(document.getElementById('social').innerHTML);
+        hcv = parseInt(document.getElementById('hcv').innerHTML);
+        traceability = parseInt(document.getElementById('traceability').innerHTML);
+
+        draw_flower();
+    }
 }
 
 // Parameters in percentages to support scaling of the image.
