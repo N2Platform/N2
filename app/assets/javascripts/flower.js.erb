@@ -1,27 +1,27 @@
 var petals = new Image();
 petals.src = "<%= asset_path('flower1-02.png') %>";
-var px=16.19, py=7.76, pw=29.76, ph=35.04;
+var px=26.3, py=10, pw=53, ph=31;
 
 var core = new Image();
 core.src = "<%= asset_path('flower1-03.png') %>";
-var cx=33.10, cy=19.11, cw=25.00, ch=14.13;
+var cx=40.0952380952, cy=19.1666666667, cw=25, ch=14.1666666667;
 
 var trunk = new Image();
 trunk.src = "<%= asset_path('flower1-04.png') %>";
-var tx=40.24, ty=34.62, tw=7.86, th=39.9;
+var tx=47.2380952381, ty=34.7222222222, tw=7.8571428571, th=40;
 
 var soil = new Image();
 soil.src = "<%= asset_path('flower1-05.png') %>";
-var sx=0, sy=74.52, sw=100, sh=25.48;
+var sx=0, sy=74.4444444444, sw=100, sh=25.5555555556;
 
 var left_leaf = new Image();
 left_leaf.src = "<%= asset_path('flower1-06.png') %>";
-var lx=19.52, ly=38.23, lw=23.81, lh=12.46;
+var lx=25, ly=38.3333333333, lw=23.8095238095, lh=12.5;
 
 
 var right_leaf = new Image();
 right_leaf.src = "<%= asset_path('flower1-08.png') %>";
-var rx=45.95, ry=36.98, rw=24.05, rh=15.93;
+var rx=51, ry=42, rw=24.0476190476, rh=16.6666666667;
 
 
 
@@ -44,12 +44,12 @@ function loadImage(img) {
 function draw_flower() {
     //Once all the images have been loaded
     Promise.all(images).then(function() {
-        scalable_draw(petals, px, py, pw, ph);
         scalable_draw(core, cx, cy, cw, ch);
-        scalable_draw(left_leaf, lx, ly, lw, lh);
-        scalable_draw(right_leaf, rx, ry, rw, rh);
         scalable_draw(trunk, tx, ty, tw, th);
         scalable_draw(soil, sx, sy, sw, sh);
+        scalable_draw(petals, px, py, pw, ph);
+        scalable_draw(left_leaf, lx, ly, lw, lh);
+        scalable_draw(right_leaf, rx, ry, rw, rh);
     });
 }
 
