@@ -53,5 +53,10 @@ group :development do
   gem 'web-console', '~> 2.0'
 end
 
+group :test do
+  # For cleaning the database between tests
+  gem 'database_cleaner'
+end
+
 gem 'bootstrap'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
