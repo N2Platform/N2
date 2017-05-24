@@ -7,10 +7,10 @@
 <%= link_to 'Edit', edit_supplier_path(@supplier) %> |
 <%= link_to 'Back', suppliers_path %>
 
-<div style="display: none;">
-  <p id="ghg"><%= @supplier.ghg_and_pollution %></p>
-  <p id="sustainability"><%= @supplier.sustainability_commitment %></p>
-  <p id="social"><%= @supplier.social_performance %></p>
-  <p id="hcv"><%= @supplier.hcv_protection %></p>
-  <p id="traceability"><%= @supplier.traceability_and_diversity %></p>
+<div style="float:right">
+  <input type="range" min="0" max="10" id="ghg" onChange="refresh()" value="<%= @supplier.ghg_and_pollution %>">
+  <input type="range" min="0" max="10"  id="sustainability" onChange="refresh()" value="<%= @supplier.sustainability_commitment %>">
+  <input type="range" min="0" max="10"  id="social" onChange="refresh()" value="<%= @supplier.social_performance %>">
+  <input type="range" min="0" max="10"  id="hcv" onChange="refresh()" value="<%= @supplier.hcv_protection %>">
+  <input type="range" min="0" max="10"  id="traceability" onChange="refresh()" value="<%= @supplier.traceability_and_diversity %>">
 </div>
