@@ -36,15 +36,16 @@ $(document).on('turbolinks:load', page_loaded);
 
 // Returns a promise that resolves into the requested image.
 function loadImage(img) {
-    return new Promise(function(resolve, reject) {
-        img.onload = resolve(img);
-    });
-
+    var deferred = $.Deferred();
+    img.onload = function() {
+        deferred.resolve();
+    };
+    return deferred.promise();
 }
 
 function draw_flower() {
     //Once all the images have been loaded
-    Promise.all(images).then(function() {
+    $.when.apply($, images).done(function() {
         //Alter images as desired, for example
         //petals = alter_image(petals, grayscale);
         //trunk = alter_image(trunk, setAlphaTo, 50);
