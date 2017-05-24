@@ -1,6 +1,6 @@
 class SuppliersController < ApplicationController
   before_action :set_supplier, only: [:show, :edit, :update, :destroy, :flower]
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:flower]
 
   # GET /suppliers
   # GET /suppliers.json

@@ -1,16 +1,28 @@
 <p id="notice"><%= notice %></p>
 
-<canvas id="flower" width="420" height="722"></canvas>
+<div class="row">
+<canvas class="col-sm-4" id="flower" width="420" height="722"></canvas>
+  <div class="col-sm-8">
+    <div class="row">
+      <div class="col-sm-4">
+        <p>ghg and pollution</p>
+        <p>sustainability commitment</p>
+        <p>social performance</p>
+        <p>hcv protection</p>
+        <p>traceability</p>
+      </div>
+      <div class="col-sm-4">
+        <input class="row-md-6" type="range" min="0" max="10" id="ghg" onChange="refresh()" value="<%= @supplier.ghg_and_pollution %>"><br>
+        <input class="row-md-6" type="range" min="0" max="10"  id="sustainability" onChange="refresh()" value="<%= @supplier.sustainability_commitment %>"><br>
+        <input class="row-md-6" type="range" min="0" max="10"  id="social" onChange="refresh()" value="<%= @supplier.social_performance %>"><br>
+        <input class="row-md-6" type="range" min="0" max="10"  id="hcv" onChange="refresh()" value="<%= @supplier.hcv_protection %>"><br>
+        <input class="row-md-6" type="range" min="0" max="10"  id="traceability" onChange="refresh()" value="<%= @supplier.traceability_and_diversity %>"><br>
+      </div>
+    </div>
+  </div>
+</div>
 
 <br>
 
 <%= link_to 'Edit', edit_supplier_path(@supplier) %> |
 <%= link_to 'Back', suppliers_path %>
-
-<div style="float:right">
-  <input type="range" min="0" max="10" id="ghg" onChange="refresh()" value="<%= @supplier.ghg_and_pollution %>">
-  <input type="range" min="0" max="10"  id="sustainability" onChange="refresh()" value="<%= @supplier.sustainability_commitment %>">
-  <input type="range" min="0" max="10"  id="social" onChange="refresh()" value="<%= @supplier.social_performance %>">
-  <input type="range" min="0" max="10"  id="hcv" onChange="refresh()" value="<%= @supplier.hcv_protection %>">
-  <input type="range" min="0" max="10"  id="traceability" onChange="refresh()" value="<%= @supplier.traceability_and_diversity %>">
-</div>
