@@ -1,27 +1,32 @@
 var petals = new Image();
 petals.src = "<%= asset_path('flower1-02.png') %>";
-var px=26.3, py=10, pw=53, ph=31;
 
 var core = new Image();
 core.src = "<%= asset_path('flower1-03.png') %>";
-var cx=40.0952380952, cy=19.1666666667, cw=25, ch=14.1666666667;
 
 var trunk = new Image();
 trunk.src = "<%= asset_path('flower1-04.png') %>";
-var tx=47.2380952381, ty=34.7222222222, tw=7.8571428571, th=40;
 
 var soil = new Image();
 soil.src = "<%= asset_path('flower1-05.png') %>";
-var sx=0, sy=74.4444444444, sw=100, sh=25.5555555556;
 
 var left_leaf = new Image();
 left_leaf.src = "<%= asset_path('flower1-06.png') %>";
-var lx=25, ly=38.3333333333, lw=23.8095238095, lh=12.5;
 
 
 var right_leaf = new Image();
 right_leaf.src = "<%= asset_path('flower1-08.png') %>";
-var rx=51, ry=42, rw=24.0476190476, rh=16.6666666667;
+
+var coords = {
+    petals: { x: 26.3, y: 10, w: 53, h:31 },
+    core: { x: 40.0952380952, y: 19.1666666667, w: 25, h: 14.1666666667 },
+    trunk: { x: 47.2380952381, y: 34.7222222222, w: 7.8571428571, h: 40 },
+    soil: { x: 0, y: 74.4444444444, w: 100, h: 25.5555555556 },
+    left_leaf: { x: 25, y: 38.3333333333, w: 23.8095238095, h: 12.5 },
+    right_leaf: { x: 51, y: 42, w: 24.0476190476, h: 16.6666666667}
+};
+
+var drawables = {};
 
 // Sustainer variables. Use these when deciding how to draw the flower!
 var ghg, sustainability, social, hcv, traceability;
@@ -47,30 +52,52 @@ function loadImage(img) {
 function draw_flower() {
     //Once all the images have been loaded
     $.when.apply($, images).done(function() {
-        //Alter images as desired, for example
-        //petals = alter_image(petals, grayscale);
-        //trunk = alter_image(trunk, setAlphaTo, 50);
-
-        // Clear the canvas of previous flowers
-        ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        //Draw the images at the specified positions.
-        scalable_draw(core, cx, cy, cw, ch);
-        scalable_draw(trunk, tx, ty, tw, th);
-        scalable_draw(soil, sx, sy, sw, sh);
-        if(ghg < 5) {
-            scalable_draw(alter_image(petals, grayscale), px, py, pw, ph);
+        if(Object.keys(drawables).length === 0){
+            drawables["core"] = {image:core, coord:coords.core};
+            drawables["trunk"] = {image:trunk, coord:coords.trunk};
+            drawables["soil"] = {image:soil, coord:coords.soil};
+            drawables["petals"] = {image:petals, coord:coords.petals};
+            drawables["left_leaf"] = {image:left_leaf, coord:coords.left_leaf};
+            drawables["right_leaf"] = {image:right_leaf, coord:coords.right_leaf};
+            if (social > 5){
+                drawables["left_leaf"].alpha = 1;
+            } else {
+                drawables["left_leaf"].alpha = 0;
+            }
+            if (social > 8){
+                drawables["right_leaf"].alpha = 1;
+            } else {
+                drawables["right_leaf"].alpha = 0;
+            }
         } else {
-            scalable_draw(petals, px, py, pw, ph);
+            if (social > 5){
+                fadeIn("left_leaf", drawables["left_leaf"].alpha);
+            } else {
+                fadeOut("left_leaf", drawables["left_leaf"].alpha);
+            }
+            if (social > 8){
+                fadeIn("right_leaf", drawables["right_leaf"].alpha);
+            } else {
+                fadeOut("right_leaf", drawables["right_leaf"].alpha);
+            }
         }
-        if(social > 3) {
-            scalable_draw(left_leaf, lx, ly, lw, lh);
+        if(ghg < 5) {
+            drawables.petals.image=alter_image(petals, grayscale);
+        } else {
+            drawables.petals.image=petals;
         }
-        if(social > 8) {
-            scalable_draw(right_leaf, rx, ry, rw, rh);
-        }
+        //Draw the images at the specified positions.
+        draw_all();
     });
+}
+
+function draw_all() {
+    console.log(drawables["left_leaf"].alpha)
+    ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for(drw in drawables) {
+        scalable_draw(drw, drawables[drw].coord, drawables[drw].alpha);
+    }
 }
 
 // Update values and draw the flower if the page has a canvas for it.
@@ -88,16 +115,25 @@ function refresh() {
 }
 
 // Parameters in percentages to support scaling of the image.
-function scalable_draw(image, x, y, width, height) {
+function scalable_draw(drawable) {
+    if(drawables[drawable].alpha === undefined) {
+        drawables[drawable].alpha = 1;
+    }
+    var x = drawables[drawable].coord.x;
+    var y = drawables[drawable].coord.y;
+    var width = drawables[drawable].coord.w;
+    var height = drawables[drawable].coord.h;
     // Convert percentages to pixels
     x = x*canvas.width/100;
     y = y*canvas.height/100;
     width = width*canvas.width/100;
     height = height*canvas.height/100;
 
-    //Draw the image
-    ctx.drawImage(image, x, y, width, height);
+    //Set the opacity
+    ctx.globalAlpha = drawables[drawable].alpha;
 
+    //Draw the image
+    ctx.drawImage(drawables[drawable].image, x, y, width, height);
 }
 
 //Takes an image as an argument and returns a canvas. Both can be used for drawing,so it makes no real difference.
@@ -127,12 +163,30 @@ function grayscale(data){
     return data;
 }
 
-function setAlphaTo(data, alpha){
-    for (var i = 0; i < data.length; i += 4) {
-        // If not already completely see through
-        if (data[i+3] > 0) {
-            data[i+3] = alpha;
-        }
+function fadeIn(img, alpha) {
+    if (alpha === undefined) {
+        alpha = 0;
     }
-    return data;
+    drawables[img].alpha = alpha;
+    alpha += 0.01;
+    draw_all();
+    if (alpha < 1) {
+        requestAnimationFrame(function() {
+            fadeIn(img, alpha);
+        });
+    }
+}
+
+function fadeOut(img, alpha) {
+    if (alpha === undefined) {
+        alpha = 1;
+    }
+    drawables[img].alpha = alpha;
+    alpha -= 0.01;
+    draw_all();
+    if (alpha > 0) {
+        requestAnimationFrame(function() {
+            fadeOut(img, alpha);
+        });
+    }
 }
