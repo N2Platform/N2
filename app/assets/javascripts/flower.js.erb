@@ -59,6 +59,7 @@ function draw_flower() {
             drawables["petals"] = {image:petals, coord:coords.petals};
             drawables["left_leaf"] = {image:left_leaf, coord:coords.left_leaf};
             drawables["right_leaf"] = {image:right_leaf, coord:coords.right_leaf};
+            drawables["petals_gray"] = {image:alter_image(petals,grayscale), coord:coords.petals, alpha: 1-ghg/10}
             if (social > 5){
                 drawables["left_leaf"].alpha = 1;
             } else {
@@ -81,18 +82,14 @@ function draw_flower() {
                 fadeOut("right_leaf", drawables["right_leaf"].alpha);
             }
         }
-        if(ghg < 5) {
-            drawables.petals.image=alter_image(petals, grayscale);
-        } else {
-            drawables.petals.image=petals;
-        }
+        fadeTowards("petals_gray", drawables["petals_gray"].alpha, 1-ghg/10)
         //Draw the images at the specified positions.
         draw_all();
     });
 }
 
 function draw_all() {
-    console.log(drawables["left_leaf"].alpha)
+    drawables["petals_gray"].alpha;
     ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for(drw in drawables) {
@@ -163,30 +160,44 @@ function grayscale(data){
     return data;
 }
 
-function fadeIn(img, alpha) {
+function fadeIn(img, alpha, target) {
     if (alpha === undefined) {
         alpha = 0;
+    }
+    if (target === undefined) {
+        target = 1
     }
     drawables[img].alpha = alpha;
     alpha += 0.01;
     draw_all();
-    if (alpha < 1) {
+    if (alpha < target) {
         requestAnimationFrame(function() {
-            fadeIn(img, alpha);
+            fadeIn(img, alpha, target);
         });
     }
 }
 
-function fadeOut(img, alpha) {
+function fadeOut(img, alpha, target) {
     if (alpha === undefined) {
         alpha = 1;
+    }
+    if (target === undefined) {
+        target = 0
     }
     drawables[img].alpha = alpha;
     alpha -= 0.01;
     draw_all();
-    if (alpha > 0) {
+    if (alpha > target) {
         requestAnimationFrame(function() {
-            fadeOut(img, alpha);
+            fadeOut(img, alpha, target);
         });
+    }
+}
+
+function fadeTowards(img, alpha, target) {
+    if (alpha > target) {
+        fadeOut(img, alpha, target);
+    } else {
+        fadeIn(img, alpha, target);
     }
 }
