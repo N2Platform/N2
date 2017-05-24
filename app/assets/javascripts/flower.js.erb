@@ -32,7 +32,7 @@ images = [loadImage(petals), loadImage(core), loadImage(trunk),
 var canvas;
 
 // Because of rails magic, window.onload doesn't trigger when clicking links.
-$(document).on('turbolinks:load', page_loaded);
+$(document).on('turbolinks:load', refresh);
 
 // Returns a promise that resolves into the requested image.
 function loadImage(img) {
@@ -60,8 +60,8 @@ function draw_flower() {
     });
 }
 
-// Draw the flower if the page has a canvas for it.
-function page_loaded() {
+// Update values and draw the flower if the page has a canvas for it.
+function refresh() {
     canvas = document.getElementById('flower');
     if (canvas) {
         ghg = parseInt(document.getElementById('ghg').innerHTML);
