@@ -45,6 +45,11 @@ function loadImage(img) {
 function draw_flower() {
     //Once all the images have been loaded
     Promise.all(images).then(function() {
+        //Alter images as desired, for example
+        //petals = alter_image(petals, grayscale);
+        //trunk = alter_image(trunk, setAlphaTo, 50);
+
+        //Draw the images at the specified positions.
         scalable_draw(core, cx, cy, cw, ch);
         scalable_draw(trunk, tx, ty, tw, th);
         scalable_draw(soil, sx, sy, sw, sh);
@@ -79,5 +84,42 @@ function scalable_draw(image, x, y, width, height) {
 
     //Draw the image
     ctx.drawImage(image, x, y, width, height);
+
+}
+
+//Takes an image as an argument and returns a canvas. Both can be used for drawing,so it makes no real difference.
+function alter_image(image, pixel_manipulation, args){
+    var altered_canvas = document.createElement('canvas');
+    altered_canvas.width = image.width;
+    altered_canvas.height = image.height;
+    var ctx = altered_canvas.getContext('2d');
+    ctx.drawImage(image, 0, 0);
     image.style.display = 'none';
+    var imageData = ctx.getImageData(0, 0, altered_canvas.width, altered_canvas.height);
+    var data = imageData.data;
+
+    pixel_manipulation(data, args);
+
+    ctx.putImageData(imageData, 0, 0);
+    return altered_canvas;
+}
+
+function grayscale(data){
+    for (var i = 0; i < data.length; i += 4) {
+        var avg = (data[i] + data[i+1] + data[i+2]) / 3;
+        data[i] = avg;
+        data[i+1] = avg;
+        data[i+2] = avg;
+    }
+    return data;
+}
+
+function setAlphaTo(data, alpha){
+    for (var i = 0; i < data.length; i += 4) {
+        // If not already completely see through
+        if (data[i+3] > 0) {
+            data[i+3] = alpha;
+        }
+    }
+    return data;
 }
