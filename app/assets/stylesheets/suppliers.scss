@@ -1,10 +1,23 @@
 // Place all the styles related to the Suppliers controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.default_background {
+    background-size: cover;
+}
+
 .dropdown-content {
     display: none;
+    position: absolute;
+    z-index: 1;
 }
 
 .show {
     display: block;
+}
+
+.style_logo {
+    /*margin-top: 25%;*/
+    margin-left: 26%;
+    width: 48%;
 }
